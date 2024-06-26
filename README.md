@@ -213,7 +213,7 @@ Inline-style:
 Reference-style: 
 ![alt text][logo]
 
-[logo]: https://raw.githubusercontent.com/gchiantore/tickets-balanza-chiantore/blob/main/assets/DER%20SIMPLE.png
+[logo]: https://github.com/gchiantore/tickets-balanza-chiantore/blob/main/assets/DER%20SIMPLE.png
 
 !https://raw.githubusercontent.com/gchiantore/tickets-balanza-chiantore/blob/main/assets/DER%20SIMPLE.png
 
