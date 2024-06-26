@@ -205,6 +205,9 @@ A continuacion se van a enumerar dichas tablas :
 
 #### DER SIMPLIFICADO
 
+
+<span>![</span><span>Aquí la descripción de la imagen por si no carga</span><span>]</span><span>(</span><span>(https://github.com/gchiantore/tickets-balanza-chiantore/blob/main/assets/DER%20SIMPLE.png)</span><span>)</span>
+
 [Insertar una imagen con el DER simplificado](https://github.com/gchiantore/tickets-balanza-chiantore/blob/main/assets/DER%20SIMPLE.png)
 
 
