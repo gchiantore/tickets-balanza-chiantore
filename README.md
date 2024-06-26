@@ -205,23 +205,14 @@ A continuacion se van a enumerar dichas tablas :
 
 #### DER SIMPLIFICADO
 
-Here's our logo (hover to see the title text):
-
-Inline-style: 
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
-
-Reference-style: 
 ![alt text][logo]
 
 [logo]: https://github.com/gchiantore/tickets-balanza-chiantore/blob/main/assets/DER%20SIMPLE.png
 
-!https://raw.githubusercontent.com/gchiantore/tickets-balanza-chiantore/blob/main/assets/DER%20SIMPLE.png
-
-[Insertar una imagen con el DER simplificado](https://github.com/gchiantore/tickets-balanza-chiantore/blob/main/assets/DER%20SIMPLE.png)
-
-
 #### DER SIMPLIFICADO
 
-Insertar una imagen con el DER
+![alt text][logo]
+
+[logo]: https://github.com/gchiantore/tickets-balanza-chiantore/blob/main/assets/DER.png
 
 
