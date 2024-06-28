@@ -209,10 +209,131 @@ A continuacion se van a enumerar dichas tablas :
 
 [ders]: https://github.com/gchiantore/tickets-balanza-chiantore/blob/main/assets/DER%20SIMPLE.png
 
-#### DER SIMPLIFICADO
+#### DER 
 
 ![alt text][der]
 
 [der]: https://github.com/gchiantore/tickets-balanza-chiantore/blob/main/assets/DER.png
 
+### DESCRIPCION DE TABLAS Y ATRIBUTOS 
 
+#### TABLA CLIENTES
+
+Almacena los Datos de los clientes que solicitan el servicio de pesaje
+
+| PK/FK | Atributo    | TIPO    | Tamaño | NULIDAD  | AUTOINC. | DEFAULT | DESCRIPCION                                                  |
+|-------|-------------|---------|--------|----------|----------|---------|--------------------------------------------------------------|
+| PK    | idcliente   | int     |        | not null | SI       |         | Identificador Unico del Cliente                              |
+|       | nombre      | varchar | 100    | not null | NO       | NO NAME | Nombre o Razón social del cliente                            |
+|       | telefono    | varchar | 20     |          | NO       | S/D     | Telefono del Cliente                                         |
+|       | correo      | varchar | 100    | not null | NO       |         | Correo electrónico del cliente                               |
+| FK    | idcondicion | int     |        | not null | NO       |         | Hace referencia a la condición comercial del cliente         |
+|       | enviawa     | boolean | 1      | not null | NO       | True    | Indica si se envia o no el ticket por mensaje al cliente     |
+
+------
+
+#### TABLA CONDICION 
+Almacena las distintas condiciones comerciales que puede tener un cliente
+
+| PK/FK | Atributo    | TIPO    | Tamaño | NULIDAD  | AUTOINC. | DEFAULT | DESCRIPCION                                                  |
+|-------|-------------|---------|--------|----------|----------|---------|--------------------------------------------------------------|
+| PK    | idcondicion | int     |        | not null | SI       |         | Identificador Unico la condicion                             |
+|       | descripcion | varchar | 100    | not null | NO       | NO COND | Descripcion de la condicion comercial                        |
+|       | precio      | deciaml | 10,2   | not null | NO       | 5000,00 | precio del servicio de acuerdo a esa condicion               |
+|       | dplazo      | varchar | int    | not null | NO       | 0       | dias de plazo para abonar el servicio                        |
+
+
+------
+
+#### TABLA PRODUCTO
+Almacena los productos que se van a pesar
+
+| PK/FK | Atributo       | TIPO    | Tamaño | NULIDAD  | AUTOINC. | DEFAULT | DESCRIPCION                                               |
+|-------|----------------|---------|--------|----------|----------|---------|-----------------------------------------------------------|
+| PK    | idproducto     | int     |        | not null | SI       |         | Identificador Unico del producto                          |
+|       | descripcion    | varchar | 100    | not null | NO       | S /DESC | Descripción del producto                                  |
+| FK    | idtipoproducto | int     |        | not null | NO       |         | Hace referencia al tipo o categoría de producto           |
+|       | icono          | varchar | 100    |          | NO       |         | Apunta al archivo con la imagen del icono del producto    |
+
+------
+
+#### TABLA TIPRODUCTO
+Almacena el tipo de producto que se va a pesar 
+
+| PK/FK | Atributo       | TIPO    | Tamaño | NULIDAD  | AUTOINC. | DEFAULT | DESCRIPCION                                                               |
+|-------|----------------|---------|--------|----------|----------|---------|---------------------------------------------------------------------------|
+| PK    | idtipoproducto | int     |        | not null | SI       |         | Identificador Unico del producto                                          |
+|       | descripcion    | varchar | 100    | not null | NO       | S /DESC | Descripción del producto                                                  |
+|       | color          | varchar | 6      |          | NO       | 000000  | Especifica el color en Hexadecimal que identifica al tipo de producto.    |
+|       | icono          | varchar | 100    |          | NO       |         | Apunta al archivo con la imagen del icono del tipo de pruducto            |
+
+------
+
+#### TABLA EMPRESA
+Almacena los datos de la empresa que brinda el servicio de pesada
+
+| PK/FK | Atributo  | TIPO    | Tamaño | NULIDAD  | AUTOINC. | DEFAULT | DESCRIPCION                             |
+|-------|-----------|---------|--------|----------|----------|---------|-----------------------------------------|
+| PK    | idempresa | int     |        | not null | SI       |         | Identificador Unico de la empresa       |
+|       | rsocial   | varchar | 100    | not null | NO       | NO/RS   | Nombre o razón social de la empresa     |
+|       | domicilio | varchar | 200    |          | NO       | N/D     | Domicilio legal de la empresa           |
+|       | localidad | varchar | 100    |          | NO       | N/L     | Localidad donde esta situada la empresa |
+|       | telefono  | varchar | 20     |          | NO       |         | Telefono de la empresa                  |
+|       | correo    | varchar | 100    |          | NO       |         | e-mail de la empresa                    |
+
+------
+
+#### TABLA OPERARIO
+Almacena los datos de los operadores de la balanza que brindan el servicio
+
+| PK/FK | Atributo   | TIPO    | Tamaño | NULIDAD  | AUTOINC. | DEFAULT | DESCRIPCION                                                 |
+|-------|------------|---------|--------|----------|----------|---------|-------------------------------------------------------------|
+| PK    | idoperario | int     |        | not null | SI       |         | Identificador Unico del operario                            |
+|       | nombre     | varchar | 100    | not null | NO       | NONAME  | Nombre o razón social de la empresa                         |
+|       | telefono   | varchar | 20     |          | NO       |         | Telefono del operario                                       |
+|       | correo     | varchar | 100    |          | NO       |         | e-mail del operario                                         |
+| FK    | idempresa  | int     |        | not null | NO       |         | Hace referencia a la empresa a la que pertenece el operario |
+
+------
+
+#### TABLA TURNO 
+Almacena la informacion de los dostintos turnos de pesaje
+
+| PK/FK | Atributo | TIPO    | Tamaño | NULIDAD  | AUTOINC. | DEFAULT | DESCRIPCION                                                  |
+|-------|----------|---------|--------|----------|----------|---------|--------------------------------------------------------------|
+| PK    | idturno  | int     |        | not null | SI       |         | Identificador Unico del truno                                |
+|       | nombre   | varchar | 100    | not null | NO       | NONAME  | Nombre del Turno                                             |
+|       | color    | varchar | 6      |          | NO       |         | Color en Hexadecimal con el que se va a identificar el turno |
+|       | icono    | varchar | 200    |          | NO       |         | Archivo del icono que representa al turno                    |
+
+------
+
+#### TABLA TICKET
+Almacena la informacion de tickets de pesaje
+
+| PK/FK | Atributo      | TIPO      | Tamaño | NULIDAD  | AUTOINC. | DEFAULT     | DESCRIPCION                                                            |
+|-------|---------------|-----------|--------|----------|----------|-------------|------------------------------------------------------------------------|
+| PK    | idticket      | int       |        | not null | SI       |             | Identificador unico del ticket                                         |
+| FK    | idoperario    | int       |        | not null | NO       |             | Identificador del operario que abrió el ticket                         |
+| FK    | idturno       | int       |        | not null | NO       |             | Identificación del turno en el que se abrió el ticket                  |
+| FK    | idcliente     | int       |        | not null | NO       |             | Identificación del cliente al que le hicieron el ticket                |
+| FK    | idempresa     | int       |        | not null | NO       |             | Identificacion de la empresa prestadora de servicio                    |
+| FK    | idproducto    | int       |        | not null | NO       |             | Identificación del producto pesado                                     |
+|       | fecha         | date/time |        | not null | NO       | curren date | Fecha de creación del ticket                                           |
+|       | origen        | varchar   | 40     | not null | NO       |             | Origen del producto transportado                                       |
+|       | destino       | carchar   | 40     | not null | NO       |             | Destino del Producto Transportado                                      |
+|       | brutopeso     | int       |        |          | NO       |             | Peso Bruto                                                             |
+|       | brutomodo     | varchar   | 1      |          | NO       |             | Modo de toma del peso Bruto (Manual o Automático)                      |
+|       | brutooperario | int       |        |          | NO       |             | Identificación del operario que tomo el peso bruto                     |
+|       | brutofecha    | date/time |        |          | NO       |             | fecha y hora en que se tomo el peso bruto                              |
+|       | tarapeso      | int       |        |          | NO       |             | Peso Tara                                                              |
+|       | taramodo      | carchar   | 1      |          | NO       |             | Modo de toma del peso Tara (Manual o Automático)                       |
+|       | taraoperario  | int       |        |          | NO       |             | Identificación del operario que tomo el peso tara                      |
+|       | tarafecha     | date/time |        |          | NO       |             | fecha y hora en que se tomo el peso tara                               |
+|       | neto          | int       |        |          | NO       |             | Peso Neto                                                              |
+|       | chasis        | varchar   | 7      | not null | NO       |             | Patente o Dominio del chasis del transporte                            |
+|       | acoplado      | varchar   | 7      |          | NO       |             | Patente o Dominio del acoplado, puede ser nulo                         |
+|       | chofer        | varchar   | 40     |          | NO       | S/DATO      | Nombre del Chofer                                                      |
+|       | importe       | decimal   | 10,2   |          | NO       |             | Importe del ticket, este depende de la condición comercial del cliente |
+|       | pendiente     | boolean   |        | not null | NO       | true        | Si el ticket le falta algún peso queda pendiente                       |
+|       | obs           | varchar   | 200    |          | NO       |             | Lugar para escribir alguna observación                                 |
