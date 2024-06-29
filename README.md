@@ -339,4 +339,6 @@ Almacena la informacion de tickets de pesaje
 |       | obs           | varchar   | 200    |          | NO       |             | Lugar para escribir alguna observación                                 |
 
 
-Se adjunta a esta documentacion el archivo ddl-balanza.sql con el script necesario para la creacion de las base de datos, tablas y relaciones, se puede acceder haciendo clic [aqui]()
+Se adjunta a esta documentacion el archivo ddl-balanza.sql con el script necesario para la creacion de las base de datos, tablas y relaciones, se puede acceder haciendo clic [aqui](https://github.com/gchiantore/tickets-balanza-chiantore/blob/main/ddl-balanza.sql)
+
+
