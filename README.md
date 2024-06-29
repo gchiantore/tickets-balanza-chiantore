@@ -1,5 +1,5 @@
 # tickets-balanza-chiantore
-## BASE DE UNA APP PARA PESAJE DE CAMIONES DE CEREAL
+## BASE DE DATOS DE UNA APP PARA PESAJE DE CAMIONES DE CEREAL
 
 
 ### Problema:
@@ -337,3 +337,6 @@ Almacena la informacion de tickets de pesaje
 |       | importe       | decimal   | 10,2   |          | NO       |             | Importe del ticket, este depende de la condición comercial del cliente |
 |       | pendiente     | boolean   |        | not null | NO       | true        | Si el ticket le falta algún peso queda pendiente                       |
 |       | obs           | varchar   | 200    |          | NO       |             | Lugar para escribir alguna observación                                 |
+
+
+Se adjunta a esta documentacion el archivo ddl-balanza.sql con el script necesario para la creacion de las base de datos, tablas y relaciones, se puede acceder haciendo clic [aqui]()
