@@ -1,4 +1,4 @@
-NOMBRE,IDTIPOPRODUCTO,ICONO
+DESCRIPCION,IDTIPOPRODUCTO,ICONO
 "TRIGO",1,/img/iconos/trigo.png
 "MAIZ",1,/img/iconos/maiz.png
 "AVENA",1,/img/iconos/avena.png
