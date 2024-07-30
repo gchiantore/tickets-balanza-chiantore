@@ -24,7 +24,7 @@ INSERT INTO EMPRESA (RSOCIAL, DOMICILIO, LOCALIDAD,TELEFONO,CORREO) VALUES
 -- TURNOS 3 registros
 -- INGRESAR DATOS POR MEDIO DE COMANDO INSERT INTO
 INSERT INTO TURNOS (NOMBRE, COLOR, ICONO) VALUES
-('MAÑANA', '2CF216', '/img/turnos/manana.png'),
+('MANANA', '2CF216', '/img/turnos/manana.png'),
 ('TARDE', 'F28F16', '/img/turnos/tarde.png'),
 ('NOCHE', '581845', '/img/turnos/noche.png');
 
