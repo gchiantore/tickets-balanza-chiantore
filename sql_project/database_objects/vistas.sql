@@ -55,4 +55,3 @@ ORDER BY
 
 
 
-select * from TICKETS_POR_TURNOS where FECHA='2024-01-15';
