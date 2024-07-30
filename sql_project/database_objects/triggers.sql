@@ -1,0 +1,54 @@
+DROP TRIGGER IF EXISTS CALCULAR_NETO_BI;
+DROP TRIGGER IF EXISTS CALCULAR_NETO_BU;
+
+DELIMITER //
+
+CREATE TRIGGER CALCULAR_NETO_BI
+BEFORE INSERT ON TICKETS
+FOR EACH ROW
+BEGIN
+	-- Calcula el precio del ticket en funcion de la condicion comercial del cliente
+    
+    DECLARE PRECIO DECIMAL(10,2);
+	SELECT CALCULAR_PRECIO_TICKET(NEW.IDCLIENTE) INTO PRECIO;
+    SET NEW.IMPORTE=PRECIO;
+    
+    -- Determina el estado del ticket y calcula el peso Neto 
+    
+    IF NEW.TARAPESO <> 0 AND NEW.BRUTOPESO <> 0 THEN
+        SET NEW.NETO = NEW.BRUTOPESO - NEW.TARAPESO;
+        SET NEW.PENDIENTE=0;
+    ELSE
+        SET NEW.NETO = 0;
+        SET NEW.PENDIENTE=1;
+    END IF;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER CALCULAR_NETO_BU
+BEFORE UPDATE ON TICKETS
+FOR EACH ROW
+BEGIN
+	
+    -- Calcula el precio del ticket en funcion de la condicion comercial del cliente
+   
+    DECLARE PRECIO DECIMAL (10,2);
+	SELECT CALCULAR_PRECIO_TICKET(NEW.IDCLIENTE) INTO PRECIO;
+    SET NEW.IMPORTE=PRECIO;
+    
+    -- Determina el estado del ticket y calcula el peso Neto 
+	
+    IF NEW.TARAPESO <> 0 AND NEW.BRUTOPESO <> 0 THEN
+        SET NEW.NETO = NEW.BRUTOPESO - NEW.TARAPESO;
+        SET NEW.PENDIENTE=0;
+    ELSE
+        SET NEW.NETO = 0;
+        SET NEW.PENDIENTE=1;
+    END IF;
+END //
+
+DELIMITER ;
+
