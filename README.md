@@ -339,6 +339,25 @@ Almacena la informacion de tickets de pesaje
 |       | obs           | varchar   | 200    |          | NO       |             | Lugar para escribir alguna observación                                 |
 
 
-Se adjunta a esta documentacion el archivo ddl-balanza.sql con el script necesario para la creacion de las base de datos, tablas y relaciones, se puede acceder haciendo clic [aqui](https://github.com/gchiantore/tickets-balanza-chiantore/blob/main/ddl-balanza.sql)
+En el archivo ```sql_project/database_structure.sql``` se encuentra los comandos DDL para la creacion de las tablas y las relaciones entre ellas, en el archivo ```sql_project/populaton.sql``` se encuentran los comandos necesarios para haceer la ingesta de prueba de los datos, algunos estan detallados en los mismos comandos y otra provienen de archivos .CSV que se encuentran en la carpeta ```data_csv```.
+
+En la carpeta ```sql_project/database_objects``` estan las funciones, los procedimientos almacenados, los triggers y las vistas de la base de datos, los archivos que contienen los comandos sql para su creacion son los siguientes ```funciones.sql, stored_procedures.sql, triggers-sql, vistas.sql```, a continuacion voy a detallar cada uno de estos objetos y la forma en la que se utilizan.
+
+### Objetos de la Base de datos
+
+#### Funciones 
+
+##### * FUNCION CONTAR_TICKET_PENDIENTES_CLIENTE
+
+Esta funcion devuelve un entero que es la cantidad de tickets que tiene pendientes en un determinado rango de fechas un determinado cliente.
+
+Parametros: cliente, fecha_desde, fecha_hasta 
+
+Ejemplo :
+
+```SELECT CONTAR_TICKET_PENDIENTES_CLIENTE(3,'2024-01-05','2024-07-14');````
+
+
+
 
 
