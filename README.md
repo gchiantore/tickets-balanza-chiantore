@@ -341,13 +341,41 @@ Almacena la informacion de tickets de pesaje
 
 En el archivo ```sql_project/database_structure.sql``` se encuentra los comandos DDL para la creacion de las tablas y las relaciones entre ellas, en el archivo ```sql_project/populaton.sql``` se encuentran los comandos necesarios para haceer la ingesta de prueba de los datos, algunos estan detallados en los mismos comandos y otra provienen de archivos .CSV que se encuentran en la carpeta ```data_csv```.
 
-En la carpeta ```sql_project/database_objects``` estan las funciones, los procedimientos almacenados, los triggers y las vistas de la base de datos, los archivos que contienen los comandos sql para su creacion son los siguientes ```funciones.sql, stored_procedures.sql, triggers-sql, vistas.sql```, a continuacion voy a detallar cada uno de estos objetos y la forma en la que se utilizan.
+En la carpeta ```sql_project/database_objects``` estan las funciones, los procedimientos almacenados, los triggers y las vistas de la base de datos, los archivos que contienen los comandos sql para su creacion son los siguientes ```funciones.sql, stored_procedures.sql, triggers-sql, vistas.sql```, a continuacion voy a detallar cada uno de estos objetos y la forma en la que se utilizan, no sin antes mensionar las maneras de replacar esta basese de datos junto con sus datos y sus objetos a los fines de que luego puedas probar con los ejemplos de cada uno de los objetos abajo detallados.
+
+### REPLICAR LA BASE DE DATOS
+
+Hay dos maneras de replicar la base de datos, en forma local, o sea en tu computadora, o bien desde aqui mismo de github usando codespaces.
+
+#### REPLICAR LA BASE DE DATOS DE MANERA LOCAL 
+
+Para esto es necesario primero que tengas acceso al motor de una base de datos MySQL ya sea en tu propio equipo o bien que tengas acceso a un servidor con un usuario con los debidos permisos, es decir con un usuario que pueda crear, eliminar y modificar tanto una base de datos como las tablas, datos y objetos que la misma tenga, dicho esto los paso son los siguientes :
+
+*  Descargar todos los archicvos del proyecto y descomprimir en una carpeta en el disco de tu computadora, ingresar a mysql desde la consola y ejecutar los archicos .sql en el siguiente orden :
+  
+   1 database_structure.sql
+   2 population.sql
+   3 database_objects/funciones.sql
+   4 database_objects/stored_procedures.sql
+   5 database_objects/triggers.sql
+   6 database_objects/vistas.sql
+
+una vez ejecutado estos scrips, y si ninguno dio error ya estariamos en condiciones de poder probrar los ejemplo de los objetos de la base de datos que estan descriptos mas abajo. 
+
+Si no quisieramos usar la linea de comando pordriamos hacer lo mismo y en el mismo orden desde algun software como DBeaver o MySql Workbench, a los fines de tener una interfaz grafica y mas intuitiva. 
+
+#### REPLICAR LA BASE DE DATOS CON CODESPACES
+
+Aqui es muy simple, en lugar de quedarnos en la solapa Local que es la que nos permitia descargar el repositorio, hacemos clic al lado, en la solapa CODESPACES, luego hacemos click en el signo + para agregar un codespace, y esperamos que se carga, va a aparecer una intefaz similar a la de visual studio code, y nos va a habilirar una terminal, ahi simplemente escribimos la palabra ``` make ``` y le damos enter, automaticamente va a levantar una base de datos en un contenedor y va a ejecutar los script en el orden correcto, luego nos va a dar acceso otra vez a la linea de comandos, aqui podemos verificar con el comando ```make test-db ``` si todas las tablas y los datos estan correctos, tambien con el comando ``` make access-db ``` podemos ingresar a MySql y comenzar a probar todo desde la linea de comando, tambien es posible crear un tunel con Visual Studio Code y esto se ejecutaria en un contenedor como si estuviera en la computadora local, y ahi una vez que todo esta esjecutado simplemente abrimos DBeaver o Workbench y nos conectamos como el localhost. 
+
+   
+
 
 ### Objetos de la Base de datos
 
-#### Funciones 
+#### FUNCIONES
 
-##### * FUNCION CONTAR_TICKET_PENDIENTES_CLIENTE
+##### * Funcion CONTAR_TICKET_PENDIENTES_CLIENTE
 
 Esta funcion devuelve un entero que es la cantidad de tickets que tiene pendientes en un determinado rango de fechas un determinado cliente.
 
@@ -355,9 +383,137 @@ Parametros: cliente, fecha_desde, fecha_hasta
 
 Ejemplo :
 
-```SELECT CONTAR_TICKET_PENDIENTES_CLIENTE(3,'2024-01-05','2024-07-14');````
+```
+SELECT CONTAR_TICKET_PENDIENTES_CLIENTE(3,'2024-01-05','2024-07-14');
+```
+
+##### * Funcion CALCULAR_PRECIO_TICKET
+
+Esta funcion devuelve un decimal que es el precio del ticket de pesaje de acuerdo a la condicion comercial del cliente al que se le realizo el ticket
+
+Parametros: cliente
+
+Ejemplo :
+
+```
+SELECT CALCULAR_PRECIO_TICKET(3);
+```
+
+##### * Funcion CALCULAR_PESO_NETO
+
+Esta funcion devuelve un entero que es el resultado de la diferencia entre el peso bruto y la tara, si uno de estos es 0, la funcion devuelve 0
+
+Parametros: ticketID
+
+Ejemplo :
+
+```
+SELECT CALCULAR_PESO_NETO(18);
+```
+
+##### * Funcion DETERMINAR_ESTADO
+
+Esta funcion devuelve un booleano, que indica si esl ticket esta pendiente, es decir que todavia falta uno de los pesos, o no, es decir que ya se han completado tanto la tara como el bruto 
+
+Parametros: ticketID
+
+Ejemplo :
+
+```
+SELECT DETERMINAR_ESTADO(18);
+```
 
 
+#### PROCEDIMIENTOS ALMACENADOS
 
+##### CREA_OPERARIO
+
+Este procedimiento permite la inserción de un operario en una empresa, si la empresa no existe va a dar un error y no se va a agregar el operario 
+
+Parametros : nombre (varchar), telefono(varchar),correo(varchar),empresa(int)
+
+Elemplo
+```
+-- Agregar un Operario
+
+CALL CREA_OPERARIO('GONZALEZ, JUAN CRUZ','974-604-9127','jcgonzales@pepito.com',1);
+
+```
+
+##### CREA_PRODUCTO
+
+Este procedimiento permite la inserción de un producto y la asignacion del mismo a un tipo de producto determinado, si el tipo de producto no existe, entonces da un error y por consiguiente el producto no se inserta en la tabal 
+
+Parametros : nombre (varchar), tipo de producto (int),icono(varchar)
+
+Elemplo
+```
+-- Agregar un producto 
+
+CALL CREA_PRODUCTO('OTROS',5,'/img/iconos/maiz.png');
+```
+
+#### TRIGGERS
+
+Hay dos triggers que se ejecutan antes de insertar un registro y antes de modificar un resgistro de la tabla tickets, esos triggers se encargan de calcular el peso neto, determinar el importe del ticket y establecer el estado del mismo. aqui hay un codigo de ejemplo para poder testear el comportamiento del trigger
+
+```
+-- INSERTAR REGISTRO EN LA TABLA TICKETS
+
+INSERT INTO TICKETS (IDOPERARIO, IDTURNO, IDCLIENTE, IDEMPRESA, IDPRODUCTO, FECHA, ORIGEN, DESTINO, BRUTOPESO, BRUTOMODO, BRUTOOPERARIO, BRUTOFECHA, TARAPESO, TARAMODO, TARAOPERARIO, TARAFECHA, CHASIS, ACOPLADO, CHOFER, IMPORTE, PENDIENTE, OBSERVACIONES)
+VALUES (1, 1, 1, 1, 1, NOW(), 'Origen1', 'Destino1', 50000, 'A', 1, NOW(), 10000, 'A', 1, NOW(), 'XX NNN XX', 'XX NNN XX', 'Chofer1', 0, 0, '');
+
+-- Aqui muestra el ultimo registro insertado 
+SELECT * FROM TICKETS
+ORDER BY IDTICKET DESC
+LIMIT 1;
+
+-- ACTUALIZAR EL ULTIMO TICKET Y REVISAR ESA ACTUALIZACION
+UPDATE TICKETS
+JOIN (SELECT IDTICKET FROM TICKETS ORDER BY IDTICKET DESC LIMIT 1) AS AUXILIAR
+ON TICKETS.IDTICKET = AUXILIAR.IDTICKET
+SET TICKETS.BRUTOPESO = 45000, TICKETS.TARAPESO = 15000;
+
+
+SELECT * FROM TICKETS
+ORDER BY IDTICKET DESC
+LIMIT 1
+
+-- TAMBIEN SE PUEDE ACTUALIZAR UN TICKET CUALQUIERA 
+UPDATE TICKETS
+SET BRUTOPESO = 55000, TARAPESO = 12000
+WHERE IDTICKET = --Aqui iria el nombre del registro;
+```
+
+#### VISTAS
+
+##### * VISTA CANTIDAD_TICKETS_POR_TURNOS
+
+CANTIDAD DE TICKETS POR FECHA Y TURNO
+ESTA VISTA ME LISTA LA CANTIDAD DE TICKETS REALIZADAS EN LOS DISTINTIOS TURNOS DE LA UNA FECHA DETERMINADA O DE LA TOTALIDAD DE LAS TABLA 
+
+EJEMPLO 
+
+```
+select * from TICKETS_POR_TURNOS where FECHA='2024-01-15';
+```
+
+##### * VISTA TICKETS_POR_TURNOS
+
+TICKETS POR TURNOS
+AQUI VOY A TENER UN LISTADO DETALLADO DE LOS TICKETS QUE SE HICIERON EL EL TURNO Y A QUIENES SE LE HICIERON 
+
+```
+select * from CANTIDAD_TICKETS_POR_TURNOS where fecha='2024-01-15';
+```
+
+##### * VISTA TIPODEPRODUCTOS_PRODUCTOS
+
+PRODUCTOS POR TIPO
+MUESTRA LOS TIPOS DE PRODUCTOS CON SUS RESPECIVOS PRODUCTOS 
+
+```
+select * from TIPODEPRODUCTOS_PRODUCTOS;
+```
 
 
