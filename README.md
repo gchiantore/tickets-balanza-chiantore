@@ -380,6 +380,7 @@ Aqui es muy simple, en lugar de quedarnos en la solapa Local que es la que nos p
 Esta funcion devuelve un entero que es la cantidad de tickets que tiene pendientes en un determinado rango de fechas un determinado cliente.
 
 Parametros: cliente, fecha_desde, fecha_hasta 
+Tablas : TICKETS, CLIENTES 
 
 Ejemplo :
 
@@ -392,6 +393,7 @@ SELECT CONTAR_TICKET_PENDIENTES_CLIENTE(3,'2024-01-05','2024-07-14');
 Esta funcion devuelve un decimal que es el precio del ticket de pesaje de acuerdo a la condicion comercial del cliente al que se le realizo el ticket
 
 Parametros: cliente
+Tablas : TICKETS, CLIENTES, CONDICION 
 
 Ejemplo :
 
@@ -404,6 +406,7 @@ SELECT CALCULAR_PRECIO_TICKET(3);
 Esta funcion devuelve un entero que es el resultado de la diferencia entre el peso bruto y la tara, si uno de estos es 0, la funcion devuelve 0
 
 Parametros: ticketID
+Tablas : TICKETS
 
 Ejemplo :
 
@@ -416,6 +419,7 @@ SELECT CALCULAR_PESO_NETO(18);
 Esta funcion devuelve un booleano, que indica si esl ticket esta pendiente, es decir que todavia falta uno de los pesos, o no, es decir que ya se han completado tanto la tara como el bruto 
 
 Parametros: ticketID
+Tablas : TICKETS
 
 Ejemplo :
 
@@ -431,6 +435,9 @@ SELECT DETERMINAR_ESTADO(18);
 Este procedimiento permite la inserción de un operario en una empresa, si la empresa no existe va a dar un error y no se va a agregar el operario 
 
 Parametros : nombre (varchar), telefono(varchar),correo(varchar),empresa(int)
+Tablas : OPERARIOS, EMPRESA
+
+Agiliza la insercion de un operario y no permite hacerlo si la empresa no existe, manteniando asi la integridad de la base de datos 
 
 Elemplo
 ```
@@ -445,6 +452,9 @@ CALL CREA_OPERARIO('GONZALEZ, JUAN CRUZ','974-604-9127','jcgonzales@pepito.com',
 Este procedimiento permite la inserción de un producto y la asignacion del mismo a un tipo de producto determinado, si el tipo de producto no existe, entonces da un error y por consiguiente el producto no se inserta en la tabal 
 
 Parametros : nombre (varchar), tipo de producto (int),icono(varchar)
+Tablas : PRODUCTOS, TIPRODUCTOS
+
+Agiliza la insercion de los productos a la base de datos, verificando que vayan a un tipo especifico y existente de produtos, si no es asi no los deja ingresar 
 
 Elemplo
 ```
@@ -456,6 +466,8 @@ CALL CREA_PRODUCTO('OTROS',5,'/img/iconos/maiz.png');
 #### TRIGGERS
 
 Hay dos triggers que se ejecutan antes de insertar un registro y antes de modificar un resgistro de la tabla tickets, esos triggers se encargan de calcular el peso neto, determinar el importe del ticket y establecer el estado del mismo. aqui hay un codigo de ejemplo para poder testear el comportamiento del trigger
+
+Estos triggers nos permiten automatizar el proceso, y hacer calculos espefificos de manera automatica como lo es el Neto, asi mismo tambien se encargan de asignar el importe del ticket buscandolo en la condicion que tiene el cliente, y determinan si los pesos se han completado o no para poner el ticket como pendiente o completado.
 
 ```
 -- INSERTAR REGISTRO EN LA TABLA TICKETS
@@ -489,6 +501,12 @@ WHERE IDTICKET = --Aqui iria el nombre del registro;
 
 ##### * VISTA CANTIDAD_TICKETS_POR_TURNOS
 
+TABLAS QUE COMPONEN LA VISTA 
+
+* TICKETS
+* TURNOS
+  
+
 CANTIDAD DE TICKETS POR FECHA Y TURNO
 ESTA VISTA ME LISTA LA CANTIDAD DE TICKETS REALIZADAS EN LOS DISTINTIOS TURNOS DE LA UNA FECHA DETERMINADA O DE LA TOTALIDAD DE LAS TABLA 
 
@@ -500,6 +518,12 @@ select * from TICKETS_POR_TURNOS where FECHA='2024-01-15';
 
 ##### * VISTA TICKETS_POR_TURNOS
 
+TABLAS QUE COMPONEN LA VISTA
+
+* TICKETS
+* TURNOS
+* CLIENTES
+
 TICKETS POR TURNOS
 AQUI VOY A TENER UN LISTADO DETALLADO DE LOS TICKETS QUE SE HICIERON EL EL TURNO Y A QUIENES SE LE HICIERON 
 
@@ -508,6 +532,11 @@ select * from CANTIDAD_TICKETS_POR_TURNOS where fecha='2024-01-15';
 ```
 
 ##### * VISTA TIPODEPRODUCTOS_PRODUCTOS
+
+TABLAS QUE COMPONEN LA VISTA
+
+* PRODUCTOS
+* TIPRODUCTOS
 
 PRODUCTOS POR TIPO
 MUESTRA LOS TIPOS DE PRODUCTOS CON SUS RESPECIVOS PRODUCTOS 
