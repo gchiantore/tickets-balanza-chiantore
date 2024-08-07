@@ -14,14 +14,14 @@ WHERE
 -- VERIFICACION DE IMPORTACION
 
 SELECT 
-    table_name AS `Table`, 
-    table_rows AS `Row Count`
+    TABLE_NAME AS `Table`, 
+    TABLE_ROWS AS `Row Count`
 FROM 
-    information_schema.tables
+    INFORMATION_SCHEMA.TABLES
 WHERE 
-    table_schema = 'BALANZA'
+    TABLE_SCHEMA = 'BALANZA'
 ORDER BY 
-    table_rows DESC;
+    TABKE_ROWS DESC;
 
 
 -- VERIFICACION DE VISTAS
