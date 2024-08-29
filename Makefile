@@ -11,6 +11,7 @@ USER=${MYSQL_USER}
 
 DOCKER_COMPOSE_FILE=./docker-compose.yml
 DATABASE_CREATION=./sql_project/database_structure.sql
+DATABASE_USERS_ROLES=./sql_project/database_users_roles.sql
 DATABASE_POPULATION=./sql_project/population.sql
 
 FILES=vistas funciones stored_procedures triggers
@@ -35,6 +36,8 @@ up:
 	@echo "Create the import and run de script"
 	docker exec -it $(SERVICE_NAME) mysql -u$(MYSQL_USER) -p$(PASSWORD)  -e "source $(DATABASE_CREATION);"
 	docker exec -it $(SERVICE_NAME) mysql -u$(MYSQL_USER) -p$(PASSWORD) --local-infile=1 -e "source $(DATABASE_POPULATION)"
+	docker exec -it $(SERVICE_NAME) mysql -u$(MYSQL_USER) -p$(PASSWORD)  -e "source $(DATABASE_USERS_ROLES);"
+	
 
 objects:
 	@echo "Create objects in database"
@@ -51,6 +54,11 @@ access-db:
 	@echo "Access to db-client"
 	docker exec -it $(SERVICE_NAME) mysql -u$(MYSQL_USER) -p$(PASSWORD) 
 
+backup-db:
+	@echo "Back up Database by structure and data"
+	# Dump MySql database to a file
+	@mkdir -p ./backup
+	docker exec -it $(SERVICE_NAME) mysqldump -u root  -p$(PASSWORD) --databases $(DATABASE) --routines --triggers --events > ./backup/$(DATABASE)-$$(date +'%Y-%m-%d').sql
 
 down:
 	@echo "Remove the Database"

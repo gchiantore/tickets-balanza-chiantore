@@ -14,14 +14,14 @@ WHERE
 -- VERIFICACION DE IMPORTACION
 
 SELECT 
-    TABLE_NAME AS `Table`, 
-    TABLE_ROWS AS `Row Count`
+    table_name AS `Table`, 
+    table_rows AS `Row Count`
 FROM 
-    INFORMATION_SCHEMA.TABLES
+    information_schema.tables
 WHERE 
-    TABLE_SCHEMA = 'BALANZA'
+    table_schema = 'BALANZA'
 ORDER BY 
-    TABLE_ROWS DESC;
+    table_rows DESC;
 
 
 -- VERIFICACION DE VISTAS
@@ -76,3 +76,69 @@ ORDER BY
     EVENT_OBJECT_TABLE, 
     ACTION_TIMING, 
     EVENT_MANIPULATION;
+
+SELECT "********************  PRUEBA DE INSERCION DE DATOS ********************";
+
+SELECT 
+    *
+FROM 
+    BALANZA.TICKETS
+LIMIT 10;    
+
+SELECT 
+    *
+FROM 
+    BALANZA.EMPRESA
+LIMIT 10;   
+
+SELECT 
+    *
+FROM 
+    BALANZA.TURNOS
+LIMIT 10;    
+
+SELECT 
+    *
+FROM 
+    BALANZA.TIPRODUCTO
+LIMIT 10;    
+
+SELECT 
+    *
+FROM 
+    BALANZA.PRODUCTOS
+LIMIT 10;    
+
+SELECT 
+    *
+FROM 
+    BALANZA.CONDICION
+LIMIT 10;    
+
+SELECT 
+    *
+FROM 
+    BALANZA.CLIENTES
+LIMIT 10;    
+
+SELECT 
+    *
+FROM 
+    BALANZA.OPERARIO
+LIMIT 10;    
+
+SELECT "********************  PRUEBA DE INSERCION DE USUARIOS ********************";
+
+SELECT 
+	User
+,   Host 
+FROM 
+	mysql.user;
+
+SELECT "********************  PRUEBA DE INSERCION DE ROLES ********************";    
+
+SELECT 
+	* 
+FROM 
+	mysql.role_edges;
+

@@ -447,6 +447,20 @@ CALL CREA_OPERARIO('GONZALEZ, JUAN CRUZ','974-604-9127','jcgonzales@pepito.com',
 
 ```
 
+##### ELIMINAR OPERARIO
+Este procedimiento permite la eliminacion de un operario, aun si esta ha realizado tickets, en caso de que los haya realizado, guarda los datos del operario, numero de ticket norme de operario y fecha de eliminacion en la tabla de TICKETS_OPERARIOS_ELIMINADOS, y actualiza el valor de IDOPERARIO en la tabla TICKETS con 0.
+
+Parámetros : IDOPERARIO (INT)
+Tablas : OPERARIOS, TICKETS, TICKETS_OPERARIOS_ELIMINADOS
+
+Elemplo
+```
+-- Eliminar un Operario
+
+CALL ELIMINAR_OPERARIO(12);
+
+```
+
 ##### CREA_PRODUCTO
 
 Este procedimiento permite la inserción de un producto y la asignacion del mismo a un tipo de producto determinado, si el tipo de producto no existe, entonces da un error y por consiguiente el producto no se inserta en la tabal 
@@ -543,6 +557,40 @@ MUESTRA LOS TIPOS DE PRODUCTOS CON SUS RESPECIVOS PRODUCTOS
 
 ```
 select * from TIPODEPRODUCTOS_PRODUCTOS;
+```
+
+##### * VISTA OPERARIOS_EMPRESAS
+
+MUESTRA LOS OPERARIOS CON SUS RESPECTIVAS EMPRESAS
+TABLAS QUE COMPONEN LA VISTA
+
+* OPERARIOS
+* EMPRESA
+
+```
+select * from OPERARIOS_EMPRESAS;
+```
+
+##### * VISTA CLIENTE_CONDICIONES
+
+MUESTRA LOS CLIENTES CON SUS RESPECTIVAS CONDICIONES COMERCIALES
+TABLAS QUE COMPONEN LA VISTA
+
+* CLIENTES 
+* CONDICION
+
+```
+select * from CLIENTES_CONDICIONES;
+```
+##### * VISTA TICKETS_PENDIENTES
+
+MUESTRA LOS TICKETS CON ESTADO DE PENDIENTE
+TABLAS QUE COMPONEN LA VISTA
+
+* TICKETS
+
+```
+select * from TICKETS_PENDIENTES where fecha='2024-01-15';
 ```
 
 

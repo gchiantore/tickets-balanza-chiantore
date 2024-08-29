@@ -1,6 +1,7 @@
 USE BALANZA;
 
 DROP PROCEDURE IF EXISTS CREA_OPERARIO;
+DROP PROCEDURE IF EXISTS ELIMINAR_OPERARIO;
 DROP PROCEDURE IF EXISTS CREA_PRODUCTO;
 
 
@@ -16,7 +17,7 @@ CREATE PROCEDURE CREA_OPERARIO(
 BEGIN
     DECLARE EMPRESA INT;
     
-    -- Verificar si el restaurante existe
+    -- Verificar si existe la Empresa.
     SELECT COUNT(*) INTO EMPRESA
     FROM EMPRESA
     WHERE IDEMPRESA = O_IDEMPRESA;
@@ -59,3 +60,44 @@ END //
 DELIMITER ;
 
 DELIMITER //
+
+CREATE PROCEDURE ELIMINAR_OPERARIO(IN p_idOperario INT)
+BEGIN
+    DECLARE operario_existe INT DEFAULT 0;
+    DECLARE operario_nombre VARCHAR(100);
+
+    START TRANSACTION;
+
+    SET SQL_SAFE_UPDATES = 0;
+
+    SELECT COUNT(*) INTO operario_existe
+    FROM OPERARIO
+    WHERE IDOPERARIO = p_idOperario;
+
+    IF operario_existe = 0 THEN
+        ROLLBACK;
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'El operario no existe';
+    ELSE
+        SELECT NOMBRE INTO operario_nombre
+        FROM OPERARIO
+        WHERE IDOPERARIO = p_idOperario;
+
+        INSERT INTO TICKETS_USUARIOS_ELIMINADOS (IDTICKET, IDOPERARIO, NOMBRE_OPERARIO)
+        SELECT IDTICKET, IDOPERARIO, operario_nombre
+        FROM TICKETS
+        WHERE IDOPERARIO = p_idOperario;
+
+        UPDATE TICKETS
+        SET IDOPERARIO = 0
+        WHERE IDOPERARIO = p_idOperario;
+
+        DELETE FROM OPERARIO
+        WHERE IDOPERARIO = p_idOperario;
+
+        COMMIT;
+    END IF;
+    SET SQL_SAFE_UPDATES = 1;
+
+END //
+
+DELIMITER ;
